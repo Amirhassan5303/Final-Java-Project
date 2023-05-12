@@ -1,10 +1,9 @@
 public class Main {
     public static void main(String[] args) {
-        Coach coach = new Coach();
-        coach.readInfo();
-        coach.readCoachInfo();
-        coach.showInfo();
-        coach.showCoachInfo();
+        Team [] teams = new Team[16];
+        for(int i = 0; i < teams.length; i++){
+            teams[i] = new Team();
+        }
 
 
     }
