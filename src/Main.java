@@ -5,8 +5,6 @@ public class Main {
             teams[i] = new Team();
         }
 
-
-        
-
     }
+
 }
