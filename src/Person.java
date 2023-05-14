@@ -1,6 +1,5 @@
-import java.util.Scanner;
+
 public class Person {
-    static Scanner console = new Scanner(System.in);
     private String name;
     private String lastName;
     private int nationalId;
