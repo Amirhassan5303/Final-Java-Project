@@ -1,9 +1,10 @@
 
+import java.time.LocalDate;
 public class Person {
     private String name;
     private String lastName;
     private int nationalId;
-    private int birthDate;
+    private LocalDate birthDate;
 
     public String getName(){
         return name;
@@ -17,7 +18,7 @@ public class Person {
         return nationalId;
     }
 
-    public int getBirthDate(){
+    public LocalDate getBirthDate(){
         return birthDate;
     }
 
@@ -33,7 +34,7 @@ public class Person {
         this.nationalId = nationalId;
     }
 
-    public void setBirthDate(int birthDate){
+    public void setBirthDate(LocalDate birthDate){
         this.birthDate = birthDate;
     }
 
