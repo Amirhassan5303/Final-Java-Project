@@ -5,7 +5,6 @@ public class Main {
     static Scanner console = new Scanner(System.in);
     static Team [] teams = new Team[16];
 
-
     public static void main(String[] args) {
 
         displayMenu();
@@ -17,6 +16,7 @@ public class Main {
             System.out.println("Enter one of the following option: ");
             System.out.println("Add Team (Press 1)");
             System.out.println("Display information of all teams (Press 2)");
+            System.out.println("Display team information by team code (Press 3)");
             System.out.println("Enter a number:  ");
             int command = console.nextInt();
             switch(command){
@@ -26,6 +26,10 @@ public class Main {
 
                 case 2:
                     displayAllTeamsInformation();
+                    break;
+
+                case 3:
+                    displayTeamInformationByTeamCode();
                     break;
             }
         }
@@ -118,4 +122,33 @@ public class Main {
         displayMenu();
         }
     }
+
+    private static void displayTeamInformationByTeamCode(){
+        System.out.print("To display team information enter team code: ");
+        int teamCode =  console.nextInt();
+        for (int i = 0; i < teams.length; i++){
+            if (teams[i] != null){
+                if (teams[i].getCoach().getTeamCode() == teamCode){
+                    System.out.println("Display information for team number " + (i + 1) + " :");
+                    System.out.println("Coach name: " + teams[i].getCoach().getName());
+                    System.out.println("Coach last name: " + teams[i].getCoach().getLastName());
+                    System.out.println("Coach national ID: " + teams[i].getCoach().getNationalId());
+                    System.out.println("Coach birth date: " + teams[i].getCoach().getBirthDate());
+                    System.out.println("Type of coaching card: " + teams[i].getCoach().getCoachingCard());
+                    System.out.println("Team name: " + teams[i].getCoach().getTeamName());
+                    System.out.println("Team code: " + teams[i].getCoach().getTeamCode());
+
+                    for (int j = 0; j < 2; j++){
+                        System.out.println("Player " + (j + 1) + " name: " + teams[i].players[j].getName());
+                        System.out.println("Player " + (j + 1) + " last name: " + teams[i].players[j].getLastName());
+                        System.out.println("Player " + (j + 1) + " birth date: " + teams[i].players[j].getBirthDate());
+                        System.out.println("Player " + (j + 1) + " national ID: " + teams[i].players[j].getNationalId());
+                        System.out.println("Player " + (j + 1) + " position: " + teams[i].players[j].getPosition());
+                    }
+                }
+            }
+        displayMenu();
+        }
+    }
+
 }
