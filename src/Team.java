@@ -4,12 +4,7 @@ public class Team {
 
     Coach coach = new Coach();
 
-    public Player [] getPlayers(){
-        return players;
-    }
     public Coach getCoach() {
         return coach;
     }
-
-
 }

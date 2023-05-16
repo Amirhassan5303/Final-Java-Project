@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 import java.util.ArrayList;
 public class Main {
@@ -17,6 +18,10 @@ public class Main {
             System.out.println("Add Team (Press 1)");
             System.out.println("Display information of all teams (Press 2)");
             System.out.println("Display team information by team code (Press 3)");
+            System.out.println("Enter the national ID of the coach to see him/her team (Press 4)");
+            System.out.println("Enter the national ID of the player to see him/her team (Press 5)");
+            System.out.println("Show player with name ali (Press 6)");
+            System.out.println("Show players older than 30 (Press 7");
             System.out.println("Enter a number:  ");
             int command = console.nextInt();
             switch(command){
@@ -30,6 +35,22 @@ public class Main {
 
                 case 3:
                     displayTeamInformationByTeamCode();
+                    break;
+
+                case 4:
+                    showCoachTeamByNationalId();
+                    break;
+
+                case 5:
+                    showPlayerTeamByNationalId();
+                    break;
+
+                case 6:
+                    showPlayersWithNameAli();
+                    break;
+
+                case 7:
+                    displayPlayersOlderThanThirty();
                     break;
             }
         }
@@ -92,7 +113,6 @@ public class Main {
             }
             else break;
         }
-        displayMenu();
     }
 
     private static void displayAllTeamsInformation(){
@@ -119,7 +139,6 @@ public class Main {
                 System.out.println("You should first add team information");
                 displayMenu();
             }
-        displayMenu();
         }
     }
 
@@ -147,8 +166,60 @@ public class Main {
                     }
                 }
             }
-        displayMenu();
         }
     }
 
+    private static void showCoachTeamByNationalId(){
+        System.out.print("Enter coach national id: ");
+        int nationalId = console.nextInt();
+        for (int i = 0 ; i < teams.length; i++){
+            if (teams[i] != null){
+                if (teams[i].getCoach().getNationalId() == nationalId){
+                    System.out.println("The coach team is: " + teams[i].getCoach().getTeamName());
+                }
+            }
+        }
+    }
+
+    private static void showPlayerTeamByNationalId(){
+        System.out.print("Enter player national id: ");
+        int nationalId = console.nextInt();
+        for (int i = 0; i < teams.length; i++){
+            if (teams[i] != null){
+                for (int j = 0; j < 2; j++){
+                    if (teams[i].players[j].getNationalId() == nationalId){
+                        System.out.println("The player team name is: " + teams[i].getCoach().getTeamName());
+                    }
+                }
+            }
+        }
+    }
+
+    private static void showPlayersWithNameAli(){
+        for (int i = 0; i < teams.length; i++){
+            if (teams[i] != null){
+                for (int j = 0; j < 2; j++){
+                    if(teams[i].players[j].getName().equalsIgnoreCase("ali")){
+                        System.out.println(teams[i].players[j].getName() + " " + teams[i].players[j].getLastName());
+                    }
+                }
+            }
+        }
+    }
+
+    private static void displayPlayersOlderThanThirty(){
+        LocalDate birthDate;
+        LocalDate date = LocalDate.of(1402, 01, 01);
+        for (int i = 0; i < teams.length; i++){
+            if (teams[i] != null){
+                for (int j = 0; j < 2; j++){
+                    birthDate =teams[i].players[j].getBirthDate();
+                    long yearsBetween = ChronoUnit.YEARS.between(birthDate, date);
+                    if (yearsBetween > 30){
+                        System.out.println(teams[i].players[j].getName() + " is older than 30");
+                    }
+                }
+            }
+        }
+    }
 }
