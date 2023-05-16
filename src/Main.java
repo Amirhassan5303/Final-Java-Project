@@ -5,6 +5,7 @@ public class Main {
     static Scanner console = new Scanner(System.in);
     static Team [] teams = new Team[16];
 
+
     public static void main(String[] args) {
 
         displayMenu();
@@ -38,7 +39,6 @@ public class Main {
 
         for (int i = 0; i < teams.length; i++) {
             teams[i] = new Team();
-            teams[i] = null;
             System.out.println("Add information for team " + (i + 1));
 
             for (int j = 0; j < 2; j++) {
@@ -93,10 +93,29 @@ public class Main {
 
     private static void displayAllTeamsInformation(){
         for (int i = 0; i < teams.length; i++){
-            for (int j = 0; j < 2; j++){
-                teams[i].players[i].getName();
-                teams[i].players[j].getPosition();
+            if (teams[i] != null){
+                System.out.println("Display information for team number " + (i + 1) + " :");
+                System.out.println("Coach name: " + teams[i].getCoach().getName());
+                System.out.println("Coach last name: " + teams[i].getCoach().getLastName());
+                System.out.println("Coach national ID: " + teams[i].getCoach().getNationalId());
+                System.out.println("Coach birth date: " + teams[i].getCoach().getBirthDate());
+                System.out.println("Type of coaching card: " + teams[i].getCoach().getCoachingCard());
+                System.out.println("Team name: " + teams[i].getCoach().getTeamName());
+                System.out.println("Team code: " + teams[i].getCoach().getTeamCode());
+
+                for (int j = 0; j < 2; j++){
+                    System.out.println("Player " + (j + 1) + " name: " + teams[i].players[j].getName());
+                    System.out.println("Player " + (j + 1) + " last name: " + teams[i].players[j].getLastName());
+                    System.out.println("Player " + (j + 1) + " birth date: " + teams[i].players[j].getBirthDate());
+                    System.out.println("Player " + (j + 1) + " national ID: " + teams[i].players[j].getNationalId());
+                    System.out.println("Player " + (j + 1) + " position: " + teams[i].players[j].getPosition());
+                    }
+                }
+            else {
+                System.out.println("You should first add team information");
+                displayMenu();
             }
+        displayMenu();
         }
     }
 }
