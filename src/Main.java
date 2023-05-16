@@ -1,11 +1,11 @@
 import java.time.LocalDate;
 import java.util.Scanner;
+import java.util.ArrayList;
 public class Main {
     static Scanner console = new Scanner(System.in);
-
+    static Team [] teams = new Team[16];
 
     public static void main(String[] args) {
-
 
         displayMenu();
 
@@ -15,13 +15,16 @@ public class Main {
         while(true){
             System.out.println("Enter one of the following option: ");
             System.out.println("Add Team (Press 1)");
-
-
+            System.out.println("Display information of all teams (Press 2)");
             System.out.println("Enter a number:  ");
             int command = console.nextInt();
             switch(command){
                 case 1 :
                     addTeam();
+                    break;
+
+                case 2:
+                    displayAllTeamsInformation();
                     break;
             }
         }
@@ -32,11 +35,10 @@ public class Main {
     }
 
     private static void addTeam() {
-        String option;
-        Team [] teams = new Team[16];
 
         for (int i = 0; i < teams.length; i++) {
             teams[i] = new Team();
+            teams[i] = null;
             System.out.println("Add information for team " + (i + 1));
 
             for (int j = 0; j < 2; j++) {
@@ -80,14 +82,21 @@ public class Main {
             int teamCode = console.nextInt();
             teams[i].getCoach().setTeamCode(teamCode);
             System.out.println("Do you want to add another team? if so enter (yes) otherwise enter (no)");
-            option = console.next();
-            if (option == "yes"){
+            String option = console.next();
+            if (option.equals("yes")){
                 continue;
             }
-            else if (option == "no"){
-                break;
-            }
+            else break;
         }
         displayMenu();
+    }
+
+    private static void displayAllTeamsInformation(){
+        for (int i = 0; i < teams.length; i++){
+            for (int j = 0; j < 2; j++){
+                teams[i].players[i].getName();
+                teams[i].players[j].getPosition();
+            }
+        }
     }
 }
