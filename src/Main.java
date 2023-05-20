@@ -4,11 +4,12 @@
    University: PNU
  */
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Main {
     static Scanner console = new Scanner(System.in);
@@ -69,95 +70,81 @@ public class Main {
         }
     }
 
+
     private static void addTeam() {
+        Scanner console = new Scanner(System.in);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         for (int i = 0; i < teams.length; i++) {
             teams[i] = new Team();
             System.out.println("Add information for team " + (i + 1));
-            for (int j = 0; j < 11; j++) {
-                teams[i].players[j] = new Player();
-                System.out.print("Enter player " + (j + 1) + " name: ");
-                String name = console.next();
-                teams[i].players[j].setName(name);
-                System.out.print("Enter player " + (j + 1) + " last name: ");
-                String lastName = console.next();
-                teams[i].players[j].setLastName(lastName);
-                try {
-                    System.out.println("Enter player " + (j + 1) + " birth date: (Year, Month, Day)");
-                    LocalDate birthDate = LocalDate.of(console.nextInt(), console.nextInt(), console.nextInt());
-                    teams[i].players[j].setBirthDate(birthDate);
-                } catch (DateTimeException | InputMismatchException e) {
-                        System.out.println("Invalid input for birth date. Please enter a valid date in the format (Year, Month, Day).");
-                        console.nextLine();
-                        j--;
-                        continue;
-                }
 
-                try{
-                    System.out.print("Enter player " + (j + 1) + " national Id: ");
-                    int nationalId = console.nextInt();
-                    teams[i].players[j].setNationalId(nationalId);
-                }
-                catch(InputMismatchException e){
-                    System.out.println("Invalid input for national ID. Please enter a valid integer.");
-                    console.next();
-                    j--;
-                    continue;
-                }
-                System.out.print("Enter player " + (j + 1) + " position: ");
-                String position = console.next();
+            for (int j = 0; j < 5; j++) {
+                teams[i].players[j] = new Player();
+                System.out.println("Enter player " + (j + 1) + " information:");
+
+                String name = readInput(console, "Name");
+                String lastName = readInput(console, "Last name");
+                LocalDate birthDate = readLocalDate(console, "Birth date (Year-Month-Day)");
+                int nationalId = readInteger(console, "National ID");
+                String position = readInput(console, "Position");
+
+                teams[i].players[j].setName(name);
+                teams[i].players[j].setLastName(lastName);
+                teams[i].players[j].setBirthDate(birthDate);
+                teams[i].players[j].setNationalId(nationalId);
                 teams[i].players[j].setPosition(position);
             }
 
-            System.out.print("Enter coach name: ");
-            String name = console.next();
-            teams[i].getCoach().setName(name);
-            System.out.print("Enter coach last name: ");
-            String lastName = console.next();
-            teams[i].getCoach().setLastName(lastName);
-            try {
-                System.out.print("Enter coach national ID: ");
-                int nationalId = console.nextInt();
-                teams[i].getCoach().setNationalId(nationalId);
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input for national ID. Please enter a valid integer.");
-                console.next();
-                i--;
-                continue;
-            }
-            try {
-                System.out.println("Enter coach birth date: (Year, Month, Day)");
-                LocalDate birthDate = LocalDate.of(console.nextInt(), console.nextInt(), console.nextInt());
-                teams[i].getCoach().setBirthDate(birthDate);
-            } catch (DateTimeException | InputMismatchException e) {
-                System.out.println("Invalid input for birth date. Please enter a valid date in the format (Year, Month, Day).");
-                console.nextLine();
-                i--;
-                continue;
-            }
-            System.out.print("Enter type of coaching card: ");
-            String coachingCard = console.next();
-            teams[i].getCoach().setCoachingCard(coachingCard);
-            System.out.print("Enter team name: ");
-            String teamName = console.next();
-            teams[i].getCoach().setTeamName(teamName);
+            System.out.println("Enter coach information:");
 
-            try{
-                System.out.print("Enter team code: ");
-                int teamCode = console.nextInt();
-                teams[i].getCoach().setTeamCode(teamCode);
-            }
-            catch(InputMismatchException e){
-                System.out.println("Invalid input for national ID. Please enter a valid integer.");
-                console.next();
-                i--;
-                continue;
-            }
+            String name = readInput(console, "Name");
+            String lastName = readInput(console, "Last name");
+            int nationalId = readInteger(console, "National ID");
+            LocalDate birthDate = readLocalDate(console, "Birth date (Year-Month-Day)");
+            String coachingCard = readInput(console, "Type of coaching card");
+            String teamName = readInput(console, "Team name");
+            int teamCode = readInteger(console, "Team code");
+
+            teams[i].getCoach().setName(name);
+            teams[i].getCoach().setLastName(lastName);
+            teams[i].getCoach().setNationalId(nationalId);
+            teams[i].getCoach().setBirthDate(birthDate);
+            teams[i].getCoach().setCoachingCard(coachingCard);
+            teams[i].getCoach().setTeamName(teamName);
+            teams[i].getCoach().setTeamCode(teamCode);
+
             System.out.println("Do you want to add another team? if so enter (yes) otherwise enter (no)");
             String option = console.next();
-            if (option.equals("yes")) {
-                continue;
-            } else break;
+            if (!option.equalsIgnoreCase("yes")) {
+                break;
+            }
+        }
+    }
+
+    private static String readInput(Scanner console, String prompt) {
+        System.out.print("Enter " + prompt + ": ");
+        return console.next();
+    }
+
+    private static int readInteger(Scanner console, String prompt) {
+        while (true) {
+            try {
+                return Integer.parseInt(readInput(console, prompt));
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input for " + prompt + ". Please enter a valid integer.");
+            }
+        }
+    }
+
+    private static LocalDate readLocalDate(Scanner console, String prompt) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        while (true) {
+            try {
+                return LocalDate.parse(readInput(console, prompt), formatter);
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid input for " + prompt + ". Please enter a valid date in the format (Year-Month-Day).");
+            }
         }
     }
 
@@ -179,7 +166,7 @@ public class Main {
                 System.out.println("Team name: " + teams[i].getCoach().getTeamName());
                 System.out.println("Team code: " + teams[i].getCoach().getTeamCode());
 
-                for (int j = 0; j < 11; j++) {
+                for (int j = 0; j < 5; j++) {
                     System.out.println("Player " + (j + 1) + " name: " + teams[i].players[j].getName());
                     System.out.println("Player " + (j + 1) + " last name: " + teams[i].players[j].getLastName());
                     System.out.println("Player " + (j + 1) + " birth date: " + teams[i].players[j].getBirthDate());
@@ -213,7 +200,7 @@ public class Main {
                     System.out.println("Team name: " + teams[i].getCoach().getTeamName());
                     System.out.println("Team code: " + teams[i].getCoach().getTeamCode());
 
-                    for (int j = 0; j < 11; j++) {
+                    for (int j = 0; j < 5; j++) {
                         System.out.println("Player " + (j + 1) + " name: " + teams[i].players[j].getName());
                         System.out.println("Player " + (j + 1) + " last name: " + teams[i].players[j].getLastName());
                         System.out.println("Player " + (j + 1) + " birth date: " + teams[i].players[j].getBirthDate());
@@ -265,7 +252,7 @@ public class Main {
         int nationalId = console.nextInt();
         boolean found = false;
         for (int i = 0; i < teams.length; i++){
-            for (int j = 0; j < 11; j++){
+            for (int j = 0; j < 5; j++){
                 if (teams[i] != null && teams[i].players[j].getNationalId() == nationalId){
                     System.out.println("The player team name is: " + teams[i].getCoach().getTeamName());
                     found = true;
@@ -289,7 +276,7 @@ public class Main {
         boolean found = false;
         for (int i = 0; i < teams.length; i++) {
             if (teams[i] != null) {
-                for (int j = 0; j < 11; j++) {
+                for (int j = 0; j < 5; j++) {
                     if (teams[i].players[j].getName().equalsIgnoreCase("ali")) {
                         System.out.println(teams[i].players[j].getName() + " " + teams[i].players[j].getLastName());
                         found = true;
@@ -315,7 +302,7 @@ public class Main {
         boolean found = false;
         for (int i = 0; i < teams.length; i++) {
             if (teams[i] != null) {
-                for (int j = 0; j < 11; j++) {
+                for (int j = 0; j < 5; j++) {
                     birthDate = teams[i].players[j].getBirthDate();
                     long yearsBetween = ChronoUnit.YEARS.between(birthDate, date);
                     if (yearsBetween > 30) {
