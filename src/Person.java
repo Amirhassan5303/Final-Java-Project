@@ -2,7 +2,7 @@ import java.time.LocalDate;
 public class Person {
     private String name;
     private String lastName;
-    private int nationalId;
+    private long nationalId;
     private LocalDate birthDate;
 
     public String getName(){
@@ -13,7 +13,7 @@ public class Person {
         return lastName;
     }
 
-    public int getNationalId(){
+    public long getNationalId(){
         return nationalId;
     }
 
